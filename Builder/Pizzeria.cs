@@ -47,6 +47,84 @@ namespace BuilderPatternPizza
         }
     }
 
+    public class PepperoniPizzaBuilder : IPizzaBuilder
+    {
+        private Pizza _pizza;
+
+        public PepperoniPizzaBuilder()
+        {
+            this.Reset();
+        }
+
+        public void Reset()
+        {
+            this._pizza = new Pizza();
+        }
+
+        public void BuildDough()
+        {
+            this._pizza.Add("Pan Dough");
+        }
+
+        public void BuildSauce()
+        {
+            this._pizza.Add("Marinara Sauce");
+        }
+
+        public void BuildToppings()
+        {
+            this._pizza.Add("Pepperoni");
+            this._pizza.Add("Sliced Onion");
+            this._pizza.Add("Bell Pepper");
+        }
+
+        public Pizza GetPizza()
+        {
+            Pizza result = this._pizza;
+            this.Reset();
+            return result;
+        }
+    }
+
+    public class VegetarianPizzaBuilder : IPizzaBuilder
+    {
+        private Pizza _pizza;
+
+        public VegetarianPizzaBuilder()
+        {
+            this.Reset();
+        }
+
+        public void Reset()
+        {
+            this._pizza = new Pizza();
+        }
+
+        public void BuildDough()
+        {
+            this._pizza.Add("Whole Wheat Dough");
+        }
+
+        public void BuildSauce()
+        {
+            this._pizza.Add("Pesto Sauce");
+        }
+
+        public void BuildToppings()
+        {
+            this._pizza.Add("Mushrooms");
+            this._pizza.Add("Sliced Tomato");
+            this._pizza.Add("Black Olives");
+        }
+
+        public Pizza GetPizza()
+        {
+            Pizza result = this._pizza;
+            this.Reset();
+            return result;
+        }
+    }
+
     public class Pizza
     {
         private List<string> _parts = new List<string>();
@@ -91,13 +169,24 @@ namespace BuilderPatternPizza
         static void Main(string[] args)
         {
             var director = new PizzaDirector();
-            var builder = new MargheritaPizzaBuilder();
-
-            director.Builder = builder;
 
             Console.WriteLine("Margherita Pizza:");
+            var margheritaBuilder = new MargheritaPizzaBuilder();
+            director.Builder = margheritaBuilder;
             director.MakePizza();
-            Console.WriteLine(builder.GetPizza().ListParts());
+            Console.WriteLine(margheritaBuilder.GetPizza().ListParts());
+
+            Console.WriteLine("Pepperoni Pizza:");
+            var pepperoniBuilder = new PepperoniPizzaBuilder();
+            director.Builder = pepperoniBuilder;
+            director.MakePizza();
+            Console.WriteLine(pepperoniBuilder.GetPizza().ListParts());
+
+            Console.WriteLine("Vegetarian Pizza:");
+            var vegetarianBuilder = new VegetarianPizzaBuilder();
+            director.Builder = vegetarianBuilder;
+            director.MakePizza();
+            Console.WriteLine(vegetarianBuilder.GetPizza().ListParts());
         }
     }
 }
