@@ -1,12 +1,12 @@
 ## ``Pizzeria.cs`` - pseudocode.
 ```
 interface IPizzaBuilder:
-    void BuildDough()
-    void BuildSauce()
-    void BuildToppings()
+    method BuildDough()
+    method BuildSauce()
+    method BuildToppings()
 
 class MargheritaPizzaBuilder implements IPizzaBuilder:
-    private Pizza _pizza
+    - _pizza: Pizza
 
     constructor MargheritaPizzaBuilder():
         this.Reset()
@@ -23,13 +23,63 @@ class MargheritaPizzaBuilder implements IPizzaBuilder:
     method BuildToppings():
         this._pizza.Add("Mozzarella Cheese")
 
-    method GetPizza():
+    method GetPizza() -> Pizza:
+        Pizza result = this._pizza
+        this.Reset()
+        return result
+
+class PepperoniPizzaBuilder implements IPizzaBuilder:
+    - _pizza: Pizza
+
+    constructor PepperoniPizzaBuilder():
+        this.Reset()
+
+    method Reset():
+        this._pizza = new Pizza()
+
+    method BuildDough():
+        this._pizza.Add("Pan Dough")
+
+    method BuildSauce():
+        this._pizza.Add("Marinara Sauce")
+
+    method BuildToppings():
+        this._pizza.Add("Pepperoni")
+        this._pizza.Add("Sliced Onion")
+        this._pizza.Add("Bell Pepper")
+
+    method GetPizza() -> Pizza:
+        Pizza result = this._pizza
+        this.Reset()
+        return result
+
+class VegetarianPizzaBuilder implements IPizzaBuilder:
+    - _pizza: Pizza
+
+    constructor VegetarianPizzaBuilder():
+        this.Reset()
+
+    method Reset():
+        this._pizza = new Pizza()
+
+    method BuildDough():
+        this._pizza.Add("Whole Wheat Dough")
+
+    method BuildSauce():
+        this._pizza.Add("Pesto Sauce")
+
+    method BuildToppings():
+        this._pizza.Add("Mushrooms")
+        this._pizza.Add("Sliced Tomato")
+        this._pizza.Add("Black Olives")
+
+    method GetPizza() -> Pizza:
         Pizza result = this._pizza
         this.Reset()
         return result
 
 class Pizza:
-    private List<string> _parts
+    - _parts: List<string>
 
     constructor Pizza():
         this._parts = new List<string>()
@@ -39,13 +89,13 @@ class Pizza:
 
     method ListParts() -> string:
         string str = ""
-        for i in range(0, this._parts.Count):
-            str += this._parts[i] + ", "
+        foreach part in this._parts:
+            str += part + ", "
         str = str.Remove(str.Length - 2)
         return "Pizza parts: " + str + "\n"
 
 class PizzaDirector:
-    private IPizzaBuilder _builder
+    - _builder: IPizzaBuilder
 
     property Builder:
         set(value: IPizzaBuilder):
@@ -66,5 +116,4 @@ class Pizzeria:
         Output("Margherita Pizza:")
         director.MakePizza()
         Output(builder.GetPizza().ListParts())
-
 ```
